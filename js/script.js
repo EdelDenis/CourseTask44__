@@ -25,4 +25,10 @@ const movieDB = {
     ]
 };
 
+const genre = document.getElementsByClassName("promo__genre");
+
+console.log(genre);
+
+genre.textContent = "Драма";
+
 
