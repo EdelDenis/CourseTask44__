@@ -25,10 +25,45 @@ const movieDB = {
     ]
 };
 
-const genre = document.getElementsByClassName("promo__genre");
 
-console.log(genre);
+// Задание 1
+
+const adv = document.querySelectorAll(".promo__adv img");
+
+adv.forEach(item =>{
+    item.remove();
+})
+
+// Вариант 2 
+
+//adv.forEach(function(item){
+  //  item.remove();
+//});
+
+// Задание 2 
+
+const poster = document.querySelector(".promo__bg");
+const genre = poster.querySelector(".promo__genre");
 
 genre.textContent = "Драма";
 
 
+// Задание 3 
+
+poster.style.backgroundImage = "url('img/bg.jpg')";
+
+// Задание 4
+
+const movieList = document.querySelector(".promo__interactive-list");
+
+movieList.innerHTML = "";
+
+movieDB.movies.sort();
+
+movieDB.movies.forEach((film,i) => {
+    movieList.innerHTML += `
+    <li class="promo__interactive-item">${i+1} ${film}
+       <div class="delete"></div>
+    </li>
+`;
+});
