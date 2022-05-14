@@ -15,57 +15,95 @@
 
 'use strict';
 
-const movieDB = {
-    movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
-    ]
-};
+document.addEventListener("DOMContentLoaded", ()=>{
+    
+    const movieDB = {
+        movies: [
+            "Логан",
+            "Лига справедливости",
+            "Ла-ла лэнд",
+            "Одержимость",
+            "Скотт Пилигрим против..."
+        ]
+    };
+    
+    const adv = document.querySelectorAll('.promo__adv img'),
+          poster = document.querySelector('.promo__bg'),
+          genre = poster.querySelector('.promo__genre'),
+          movieList = document.querySelector('.promo__interactive-list'),
+          addForm = document.querySelector("form.add"),
+          addInput = addForm.querySelector(".adding__input"),
+          checkbox = addForm.querySelector(`[type="checkbox"]`);
+          
 
+    addForm.addEventListener("submit", (event)=>{
+            event.preventDefault();
+ 
+            let newFilm = addInput.value;
+            let favorite = checkbox.сhecked;
 
-// Задание 1
+            if(newFilm){
+                if(newFilm.length>21) {
+                   newFilm = `${newFilm.substring(0,22)}...`;
+                }
+            if(favorite) {
+                console.log("Любимый");
+            }
 
-const adv = document.querySelectorAll(".promo__adv img") // выбрали селектор img картинок(псевдомассив)
+            movieDB.movies.push(newFilm);
+            sortArr(movieDB.movies);
 
-adv.forEach(item =>{
-    item.remove();
-});                   // - перебрали псевдомассив с картинками и удалили картинки
+            createMovieList(movieDB.movies,movieList);
+            }
+            
+            event.target.reset();
+    });
 
-// Вариант 2 
+    
+    const deleteAdv = (array) =>{
+        array.forEach(item => {
+            item.remove();
+        });
+    }
 
-//adv.forEach(function(item){
-   // item.remove();
-//})
+    
+    
+    const makeChanges = () => {
+        genre.textContent = 'драма';
+    
+        poster.style.backgroundImage = 'url("img/bg.jpg")';
+    };
 
-// Задание 2 
+    
 
-const poster = document.querySelector(".promo__bg") // - выделили селектор с постером(надо менять бекгдраунд)
-const genre = poster.querySelector(".promo__genre") // - выделили элемент с жанром (поменять жанр)
+    const sortArr = (arr) =>{
+        arr.sort();
+    };
 
-genre.textContent = "Драма"; // - поменяли жанр на драму
+    sortArr(movieDB.movies);
 
-// Задание 3 
+    function createMovieList (films, parent) {
+        parent.innerHTML = "";
+        sortArr(films);
+        films.forEach((film, i) => {
+           parent.innerHTML += `
+            <li class="promo__interactive-item">${i + 1} ${film}
+                <div class="delete"></div>
+            </li>
+        `;
+    });
 
-poster.style.backgroundImage = "url('img/bg.jpg')"; // - поменяли фон элементу (poster)
+    document.querySelectorAll(".delete").forEach((btn, i ) =>{
+        btn.addEventListener("click", ()=>{
+            btn.parentElement.remove();
+            movieDB.movies.splice(i, 1);
+            createMovieList(movieDB.movies,movieList);
+        });
+    });
+    }
 
+    deleteAdv(adv);
+    makeChanges();
+    createMovieList(movieDB.movies,movieList);
+});
 
-
-// Задание 4
-
-const movieList = document.querySelector(".promo__interactive-list") // - создали переменную и выделили нужный селектор
-
-movieList.innerHTML = ""; - // очистили список фильмов
-
-movieDB.movies.forEach((film,i) =>{                       // - перебрали миссив обьекта movieDB -  список фильмов 
-    movieList.innerHTML+= `
-    <li class="promo__interactive-item">${i+1} ${film}   
-       <div class="delete"></div>
-    </li>
-`;
-})  //  тем самым сделали список фильмов денамическим (берет данные из обьекта)
-    //  также добавили нумерацию фильмам массива из обьекта
-
-movieDB.movies.sort(); // - отсортировали по алфавиту массив 
